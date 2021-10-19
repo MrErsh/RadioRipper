@@ -17,8 +17,8 @@
 ____
 * /Fakes/**Api.Fake** - моки для **Client.Api**. Используется в конфигурации *Debug_FakeData*.
 ____
-* /Demos/**UIDemo** - демо компонентов **Client.UI**
-* /Demos/**RipperCoreDemo** - демо компонентов **Core**
+* /Demos/**UIDemo** - демо компонентов **Client.UI**;
+* /Demos/**RipperCoreDemo** - демо компонентов **Core**.
 
 
 ## Примеры интерфейса
