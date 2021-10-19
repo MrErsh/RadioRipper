@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MrErsh.RadioRipper.Model">
+  <member name="P:MrErsh.RadioRipper.Model.Track.Station">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="P:MrErsh.RadioRipper.Model.Track.StationId">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+</assembly>

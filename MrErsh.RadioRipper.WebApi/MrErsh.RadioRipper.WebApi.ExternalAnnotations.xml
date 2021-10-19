@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MrErsh.RadioRipper.WebApi">
+  <member name="M:MrErsh.RadioRipper.Dal.RadioDbExtensions.ForUser(System.Linq.IQueryable{MrErsh.RadioRipper.Model.Station},System.String)">
+    <parameter name="userId">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Dal.RadioDbExtensions.StationsForUser(MrErsh.RadioRipper.Dal.RadioDbContext,System.String)">
+    <parameter name="userId">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.WebApi.ApiControllers.ControllerExtensions.GetCurrentUserId(Microsoft.AspNetCore.Mvc.ControllerBase)">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.WebApi.Bl.IRipperFactory.CreateTimered(MrErsh.RadioRipper.Model.Station)">
+    <parameter name="station">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.WebApi.Bl.RipperFactory.CreateTimered(MrErsh.RadioRipper.Model.Station)">
+    <parameter name="station">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>

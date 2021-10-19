@@ -1,0 +1,15 @@
+#VS
+.vs
+
+#Build results
+[Dd]ebug/
+[Dd]ebug_FakeData/
+All_debug/
+[Rr]elease/
+[Oo]bj/
+bin/
+AppPackages
+logs/
+
+#Temporary dev items
+*.db*

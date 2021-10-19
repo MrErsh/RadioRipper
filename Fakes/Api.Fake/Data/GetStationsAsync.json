@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Good-time oldies",
+    "Url": "http://listen.181fm.com/181-goodtime_128k.mp3?aw_0_1st.playerid=esPlayer&aw_0_1st.skey=1616135327",
+    "Tracks": null,
+    "Comment": null,
+    "IsRunning": true,
+    "Id": "b2498363-f2ae-44ae-b67d-6f46e649e84a"
+  },
+  {
+    "Name": "Jame do lounge",
+    "Url": "https://streamingv2.shoutcast.com/FDJAZZRADIO?icy=https",
+    "Tracks": null,
+    "Comment": null,
+    "IsRunning": false,
+    "Id": "c5ca0bd9-d5ad-4c52-afd4-1cdb87bdeddf"
+  },
+  {
+    "Name": "Radio Bellissima Relax and wvery lonlogongonognognognognognognognognognogngon",
+    "Url": "http://62.171.171.202:8030/stream",
+    "Tracks": null,
+    "Comment": null,
+    "IsRunning": true,
+    "Id": "84e93e18-ab8f-486f-96b0-c40f419bdaf6"
+  }
+]

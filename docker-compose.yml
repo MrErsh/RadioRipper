@@ -1,0 +1,60 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    container_name: rr_webapi
+    build:
+      context: .
+      dockerfile: MrErsh.RadioRipper.WebApi/Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+
+  db:
+    image: postgres
+    container_name: rr_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 9070:5432
+    volumes:
+      - db-volume:/var/lib/postgresdb/data:rw
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: rr_pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=Admin123
+    ports:
+      - 9080:80
+    volumes:
+      - pgadmin-volume:/var/lib/pgadmin
+
+  seq:
+    image: datalust/seq:latest
+    container_name: rr_seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 9090:80
+    volumes:
+      - seq-vol:/data:rw
+  
+  #adminer:
+  #  image: adminer
+  #  restart: always
+  #  ports:
+  #    - 8082:8080
+    
+volumes:
+  db-volume:
+    external: true
+
+  pgadmin-volume:
+    external: true
+
+  seq-vol:
+    external: true

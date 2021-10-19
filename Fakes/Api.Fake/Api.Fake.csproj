@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+    <RootNamespace>MrErsh.RadioRipper.Client.Api.Fake</RootNamespace>
+    <AssemblyName>MrErsh.RadioRipper.Client.Api.Fake</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\GetStationsAsync.json" />
+    <None Remove="Data\GetStationsShortAsync.json" />
+    <None Remove="Data\GetTracksAsync.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\GetStationsShortAsync.json" />
+    <EmbeddedResource Include="Data\GetStationsAsync.json" />
+    <EmbeddedResource Include="Data\GetTracksAsync.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MrErsh.RadioRipper.Client.Api\MrErsh.RadioRipper.Client.Api.csproj" />
+  </ItemGroup>
+
+</Project>

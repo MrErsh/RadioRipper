@@ -1,0 +1,11 @@
+﻿3. UI Tooling
+	https://github.com/microsoft/microsoft-ui-xaml/issues/4140
+8. Автоключение трекинга после срока из конфига(~5-30 дней?)б макимальное количество запущенных радиостанций для пользователя
+9. Получать конфиг с сервера
+15. Тесты на Api.Infrastructure.http
+21. Локализация
+23. Экспорт плейлиста куда-нибудь
+24. insertionType='preroll'
+25. TitleBar
+	https://github.com/microsoft/microsoft-ui-xaml/issues/4056
+	https://github.com/microsoft/microsoft-ui-xaml/issues/2961

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MrErsh.RadioRipper.Client.App_v2">
+  <member name="P:MrErsh.RadioRipper.Client.Model.StationModel.Station">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Mvvm.LoadingTracker.#ctor(MrErsh.RadioRipper.Client.Mvvm.BaseViewModel)">
+    <parameter name="viewModel">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.AuthService.LoginAsync(System.String,System.String,System.Boolean)">
+    <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.CredentialStorage.GetLoginInfo">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.OnDispatcherQueueThreadingService.#ctor(System.Func{Microsoft.UI.Dispatching.DispatcherQueue},System.Threading.SemaphoreSlim)">
+    <parameter name="dispatcherFactory">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="loadedEvent">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.SimpleNavigationService.#ctor(MrErsh.RadioRipper.Client.Services.IThreadingService,Serilog.ILogger,System.Func{Microsoft.UI.Xaml.Controls.Frame},System.Threading.SemaphoreSlim)">
+    <parameter name="threadingService">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="logger">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="rootFrameFactory">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="frameLoadedEvent">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.ViewModelTypeMismatchException`1.#ctor(System.Type)">
+    <parameter name="actualType">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:MrErsh.RadioRipper.Client.ViewModels.AddStationViewModel.Station">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.ViewModels.TracksViewModel.UpdateAsync(MrErsh.RadioRipper.Model.Station)">
+    <parameter name="station">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>

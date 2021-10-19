@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Configurations>Debug;Release;</Configurations>
+    <UserSecretsId>733a75ec-831d-4ba5-9540-ccc1238e150b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <RootNamespace>MrErsh.RadioRipper.WebApi</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Infrastructure\Filters\**" />
+    <Compile Remove="logs\**" />
+    <Content Remove="Infrastructure\Filters\**" />
+    <Content Remove="logs\**" />
+    <EmbeddedResource Remove="Infrastructure\Filters\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <None Remove="Infrastructure\Filters\**" />
+    <None Remove="logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.5.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+    <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.17.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="NullGuard.Fody" Version="3.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="7.0.0" />
+    <PackageReference Include="Serilog.Exceptions.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
+    <PackageReference Include="Swashbuckle" Version="5.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MrErsh.RadioRipper.Dal\MrErsh.RadioRipper.Dal.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Model\MrErsh.RadioRipper.Model.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Core\MrErsh.RadioRipper.Core.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.IdentityDal\MrErsh.RadioRipper.IdentityDal.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Model\MrErsh.RadioRipper.Model.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Shared\MrErsh.RadioRipper.Shared.csproj" />   
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Middleware\" />
+  </ItemGroup>
+
+</Project>

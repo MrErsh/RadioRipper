@@ -1,0 +1,79 @@
+<Window x:Class="MrErsh.RadioRipper.Client.AddStationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:MrErsh.RadioRipper.Client.Converters"
+        xmlns:ext="clr-namespace:MrErsh.RadioRipper.Client.Infrastructure.Markup"
+        xmlns:vm="clr-namespace:MrErsh.RadioRipper.Client.ViewModels"
+        mc:Ignorable="d"
+        Title="Add link"
+        DataContext="{Binding Stations, Source={StaticResource ViewModelLocator}}"
+        d:DataContext="{d:DesignInstance Type=vm:AddStationViewModel, IsDesignTimeCreatable=True}"
+        Height="270"
+        Width="500"
+        ResizeMode="NoResize">
+
+    <StackPanel Margin="10">
+        <StackPanel.Resources>
+            <Style TargetType="TextBox">
+                <Style.Setters>
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                    <Setter Property="MinWidth" Value="425" />
+                    <Setter Property="MaxWidth" Value="425"></Setter>
+                    <Setter Property="MaxLines" Value="1" />
+                    <Setter Property="Margin" Value="0 7 0 2" />
+                </Style.Setters>
+            </Style>
+
+            <converters:VerySimpleEnumToObjectConverter x:Key="StatusToColorConverter" Default="Transparent">
+                <converters:VerySimpleEnumToObjectConverter.Cases>
+                    <converters:Case Key="{x:Static vm:CheckingState.Correct}" Value="Green"  />
+                    <converters:Case Key="{x:Static vm:CheckingState.Incorrect}" Value="Yellow"  />
+                </converters:VerySimpleEnumToObjectConverter.Cases>
+            </converters:VerySimpleEnumToObjectConverter>
+        </StackPanel.Resources>
+        
+        <TextBlock Margin="0 0 0 2">Name</TextBlock>
+        
+        <TextBox Text="{Binding Station.Name, Mode=TwoWay}" 
+                 HorizontalAlignment="Left" />
+
+        <TextBlock Margin="0 7 0 2"
+                   Text="Url" />
+
+        <StackPanel Orientation="Horizontal">
+            <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=200}">
+                <!--<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction Command="{Binding CheckCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>-->
+            </TextBox>
+
+            <Ellipse Width="10" 
+                     Height="10" 
+                     Fill="{Binding CheckingUrlState, Converter={StaticResource StatusToColorConverter}}" 
+                     VerticalAlignment="Center" 
+                     Margin="8 0 0 -5"/>
+        </StackPanel>
+
+        <TextBlock Margin="0 7 0 2"
+                   Text="Comment" />
+
+        <TextBox Text="{Binding Station.Comment, Mode=TwoWay}" />
+
+        <Border BorderThickness="1" 
+                BorderBrush="Red" 
+                Visibility="{ext:VisibleOnDebug}"
+                Width="425">
+            <TextBlock Text="{Binding CurrentTrackName}"/>
+        </Border>
+        
+        <WrapPanel HorizontalAlignment="Right" Margin="0 15 0 0">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,10,0">OK</Button>
+            <Button IsCancel="True" MinWidth="60">Cancel</Button>
+        </WrapPanel>
+    </StackPanel>
+</Window>

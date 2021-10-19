@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="Client">
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.AuthHeaderHandler.#ctor(MrErsh.RadioRipper.Client.Infrastructure.Http.IJWTAuthTokenProvider,System.Net.Http.HttpMessageHandler)">
+    <parameter name="jwtTokenProvider">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="innerHandler">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.IJWTAuthTokenProvider.GetTokenAsync(System.Threading.CancellationToken)">
+    <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.JWTAuthTokenProvider.#ctor(MrErsh.RadioRipper.Client.Services.ILoginRequests,MrErsh.RadioRipper.Client.Infrastructure.IThreadingService)">
+    <parameter name="requests">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="threadingService">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.JWTAuthTokenProvider.GetTokenAsync(System.Threading.CancellationToken)">
+    <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.NavigableViewModel`1.OnNavigating(System.Object)">
+    <parameter name="param">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.NavigableViewModel`1.OnNavigatingInternal(`0)">
+    <parameter name="param">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.ThreadingService.#ctor(System.Windows.Threading.Dispatcher)">
+    <parameter name="dispatcher">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:MrErsh.RadioRipper.Client.Model.StationModel.Station">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="P:MrErsh.RadioRipper.Client.ViewModels.AddStationViewModel.Station">
+    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.ViewModels.TracksViewModel.UpdateAsync(MrErsh.RadioRipper.Model.Station)">
+    <parameter name="station">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>

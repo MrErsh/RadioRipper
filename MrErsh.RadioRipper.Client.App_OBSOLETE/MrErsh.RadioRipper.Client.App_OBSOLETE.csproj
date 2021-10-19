@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>MrErsh.RadioRipper.Client</RootNamespace>
+    <Configurations>Debug;Release;All_debug;Debug_FakeData</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Content\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Content\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Content\**" />
+    <None Remove="Services\**" />
+    <Page Remove="Content\**" />
+    <Page Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Images\add.png" />
+    <None Remove="Assets\Images\delete.png" />
+    <None Remove="Assets\Images\refresh.png" />
+    <None Remove="Assets\Images\refresh_2.png" />
+    <None Remove="Assets\Images\start.png" />
+    <None Remove="Assets\Images\stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.5.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.17.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="ModernUI.WPFCore" Version="2.0.0" />
+    <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
+    <PackageReference Include="NullGuard.Fody" Version="3.0.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+    <PackageReference Include="Refit" Version="6.0.38" />
+    <PackageReference Include="Refit.Newtonsoft.Json" Version="6.0.38" />
+    <PackageReference Include="SimpleInjector" Version="5.3.2" />
+    <PackageReference Include="TinyMapper" Version="3.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..Fakes\Api.Fake\Api.Fake.csproj" Condition="'$(Configuration)' == 'Debug_FakeData'" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Client.Api\MrErsh.RadioRipper.Client.Api.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Model\MrErsh.RadioRipper.Model.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Client.Shared\MrErsh.RadioRipper.Client.Shared.csproj" />
+    <ProjectReference Include="..\MrErsh.RadioRipper.Core\MrErsh.RadioRipper.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\add.png" />
+    <Resource Include="Assets\Images\delete.png" />
+    <Resource Include="Assets\Images\refresh.png" />
+    <Resource Include="Assets\Images\refresh_2.png" />
+    <Resource Include="Assets\Images\start.png" />
+    <Resource Include="Assets\Images\stop.png" />
+  </ItemGroup>
+
+</Project>

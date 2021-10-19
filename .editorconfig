@@ -1,0 +1,41 @@
+[*]
+end_of_line = crlf
+
+[*.xml]
+indent_style = space
+
+# Code files
+[*.{cs,csx,xaml,xml}]
+charset = utf-8
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# C# files
+[*.cs]
+
+########################
+# Formatting
+########################
+
+# Indentation preferences
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents = true
+csharp_indent_case_contents_when_block = true
+csharp_indent_switch_labels = true
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = none
+
+# IDE0022: Use block body for methods
+csharp_style_expression_bodied_methods = when_on_single_line
+
+# IDE0011: Add braces
+csharp_prefer_braces = when_multiline
+
+# IDE0063: Use simple 'using' statement
+csharp_prefer_simple_using_statement = false
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MrErsh.RadioRipper.Client.Shared">
+  <member name="M:MrErsh.RadioRipper.Client.Services.IAuthService.LoginAsync(System.String,System.String,System.Boolean)">
+    <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.ICredentialStorage.GetLoginInfo">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Services.ICredentialStorage.Store(System.String,System.String)">
+    <parameter name="userName">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="password">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>

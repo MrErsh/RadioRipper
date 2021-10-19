@@ -1,0 +1,228 @@
+﻿<Window x:Class="MrErsh.RadioRipper.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="clr-namespace:MrErsh.RadioRipper.Client.Converters"
+        mc:Ignorable="d"
+        Title="RadioRipper client" Height="450" Width="800"
+        DataContext="{Binding Stations, Source={StaticResource ViewModelLocator}}"
+        MinWidth="800">
+    <!--TODO VE: styling-->
+    <Grid x:Name="Root">
+        <Grid.Resources>
+            <conv:BoolToAnythingConverter x:Key="StatusToColorConverter" TrueValue="#34EB6B" FalseValue="#D6D6D6" />
+
+            <Style TargetType="Button" x:Key="IconButton">
+                <Style.Setters>
+                    <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0"></Setter>
+                </Style.Setters>
+            </Style>
+
+            <Style TargetType="Button" BasedOn="{StaticResource IconButton}">
+                <Setter Property="Width" Value="27" />
+                <Setter Property="Height" Value="27" />
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="2"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <ListBox x:Name="StationsList"
+                     ItemsSource="{Binding Stations, Mode=OneWay}"
+                     SelectedItem="{Binding SelectedStation}"
+                     MaxWidth="600"
+                     Width="350">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource IconButton}">
+                                    <Style.Setters>
+                                        <Setter Property="Width" Value="16" />
+                                        <Setter Property="Height" Value="16" />
+                                        <Setter Property="Margin" Value="1 0 2 0" />
+                                        <Setter Property="FontSize" Value="10" />
+                                    </Style.Setters>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />   
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                          
+    <!--TODO VE: OneTime-->
+                            <TextBlock Grid.Column="1"
+                                       Grid.Row="0"
+                                       Width="240"
+                                       TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"
+                                       Text="{Binding Station.Name, Mode=OneWay}"
+                                       HorizontalAlignment="Left"/>
+
+                            <TextBlock Grid.Column="1" Grid.Row="1" Foreground="Gray" FontSize="10"  Text="{Binding Station.Url, Mode=OneWay}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Width="240"/>
+                            <Ellipse Grid.Column="2" Grid.RowSpan="2" Fill="{Binding Station.IsRunning, Converter={StaticResource StatusToColorConverter}}" Width="8" Height="8" Margin="5 0 18 0" Stroke="White" StrokeThickness="1"></Ellipse>
+                            <!--TODO VE: icons as font-->
+
+                            <Button Grid.Column="3" 
+                                    Grid.RowSpan="2" 
+                                    Command="{Binding ElementName=Root, Path=DataContext.RunStationCommand}" 
+                                    CommandParameter="{Binding Station.Id}"
+                                    IsEnabled="{Binding Station.IsRunning, Converter={StaticResource InvertBooleanConverter}}"
+                                    Content="&#xE768;">
+                                <!--<Image Source="Assets\Images\start.png" Width="8" Height="8"></Image>-->
+                            </Button>
+                            
+                            <Button Grid.Column="4" 
+                                    Grid.RowSpan="2" 
+                                    Command="{Binding ElementName=Root, Path=DataContext.StopStationCommand}"
+                                    CommandParameter="{Binding Station.Id}"
+                                    IsEnabled="{Binding Station.IsRunning}"
+                                    Content="&#xE769;">
+                                <!--<Image Source="Assets\Images\stop.png" Width="8" Height="8"></Image>-->
+                            </Button>
+                                                       
+                            <Button Grid.Column="5" 
+                                    Grid.RowSpan="2" 
+                                    Command="{Binding ElementName=Root, Path=DataContext.DeleteStationCommand}"
+                                    CommandParameter="{Binding Station.Id}"
+                                    IsEnabled="{Binding Station.IsRunning, Converter={StaticResource InvertBooleanConverter}}"
+                                    Content="&#xE711;"
+                                    Foreground="Red"
+                                    FontWeight="UltraBold"
+                                    FontSize="8"
+                                    Visibility="{Binding Station.IsRunning, Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                                <!--<Image Source="Assets\Images\delete.png" Width="8" Height="8" />-->
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Margin="0 0 5 0"
+                            Command="{Binding RefreshCommand}"
+                            Content="&#xE72C;">
+                        <!--<Image Source="Assets\Images\refresh_2.png" Width="20"></Image>-->
+                    </Button>
+
+                    <Button Command="{Binding AddStationCommand}"
+                            Content="&#xE710;"
+                            FontWeight="UltraBold">
+                        <!--<Image Source="Assets\Images\add.png" Width="20"/>-->
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" IsEnabled="False" />
+        
+        <Grid x:Name="TrackList"
+              Grid.Column="2"
+              MinWidth="330"
+              Margin="0 15 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid VerticalAlignment="Center"
+                  Margin="10 0"
+                  DataContext="{Binding TracksViewModel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock VerticalAlignment="Center" 
+                           Text="From:" />
+
+                <DatePicker Grid.Column="1"
+                            Margin="5 0 0 0" 
+                            SelectedDate="{Binding DateFrom, Mode=TwoWay}" />
+                
+                <TextBlock Grid.Column="2" 
+                           Margin="15 0 0 0"
+                           VerticalAlignment="Center"
+                           Text="to:" />
+                
+                <DatePicker Grid.Column="3"
+                            Margin="5 0 0 0" 
+                            SelectedDate="{Binding DateTo, Mode=TwoWay}" />
+
+                <Button Grid.Column="4"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource IconButton}"
+                        Content="&#xE72C;"
+                        Command="{Binding UpdateCommand}" />
+            </Grid>
+        
+            <Border Margin="10" Grid.Row="1" Background="AntiqueWhite"
+                    BorderThickness="1">
+                <ListBox Grid.Row="1"
+                         DataContext="{Binding TracksViewModel}"
+                         ItemsSource="{Binding Tracks}"
+                         MinWidth="400"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="15 5 15 5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" MaxWidth="400" />
+                                    <ColumnDefinition Width="*" MaxWidth="120" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{Binding FullName}"
+                                           Width="200"
+                                           TextTrimming="CharacterEllipsis"
+                                           TextWrapping="NoWrap" />
+                                
+                                <!--TODO VE: to local time-->
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding DateTime, StringFormat=hh:mm dd.MM.yyyy}"
+                                           TextAlignment="Right" Margin="15 0 15 5"
+                                           HorizontalAlignment="Right"
+                                           FontSize="10"
+                                           VerticalAlignment="Bottom"
+                                           Foreground="Gray"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Row="2"
+                        Margin="10 15">
+                <TextBlock>Count: </TextBlock>
+                <TextBlock Text="{Binding TracksViewModel.TrackCount}" Margin="10 0"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

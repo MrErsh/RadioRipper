@@ -1,0 +1,58 @@
+<Window
+    x:Class="MrErsh.RadioRipper.Client.App_v2.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <!-- MinWidth, MinHeight? -->
+    <!-- example https://github.com/marb2000/DesktopWindow -->
+    <Grid Name="Root"
+          DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource TopCommandBarBackground}"
+                Visibility="{Binding IsAuthorized, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}">
+            <Button Background="Transparent"
+                    HorizontalAlignment="Right"
+                    Command="{Binding LogOutCommand}"
+                    IsTabStop="False">
+                <ToolTipService.ToolTip>
+                    <TextBlock>Logged as <Run Text="{Binding CurrentUserName}" /></TextBlock>
+                </ToolTipService.ToolTip>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Width="15"
+                             Height="15"
+                             Fill="Gray" />
+
+                    <FontIcon FontFamily="Segoe MDL2 Assets"
+                              FontSize="12"
+                              Glyph="&#xE77B;"
+                              Foreground="White" />
+
+                    <TextBlock Grid.Column="1"
+                                   Text="Logout"
+                                   Margin="5 0 0 0"
+                               FontSize="12"
+                                   VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+        </Border>
+
+        <Frame Grid.Row="1"
+           x:Name="ContentFrame"
+           Background="White"
+           VerticalContentAlignment="Stretch"
+           VerticalAlignment="Stretch" />
+    </Grid>
+</Window>
+

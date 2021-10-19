@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MrErsh.RadioRipper.Client.Api">
+  <member name="M:MrErsh.RadioRipper.Client.Api.Infrastructure.IJWTTokenProvider.GetTokenAsync(System.Threading.CancellationToken)">
+    <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Api.Infrastructure.IJWTTokenStorage.Set(System.String)">
+    <parameter name="jwtToken">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Api.Infrastructure.JWTTokenStorage.#ctor(MrErsh.RadioRipper.Client.Api.ILoginService,MrErsh.RadioRipper.Client.Services.ICredentialStorage)">
+    <parameter name="loginService">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="credentialStorage">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Api.Infrastructure.JWTTokenStorage.GetTokenAsync(System.Threading.CancellationToken)">
+    <attribute ctor="M:JetBrains.Annotations.ItemCanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Api.Infrastructure.JWTTokenStorage.Set(System.String)">
+    <parameter name="jwtToken">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.AuthHeaderHandler.#ctor(MrErsh.RadioRipper.Client.Api.Infrastructure.IJWTTokenStorage,MrErsh.RadioRipper.Client.Services.IAuthService,Serilog.ILogger,System.Net.Http.HttpMessageHandler)">
+    <parameter name="jwtTokenProvider">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="authService">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="logger">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="innerHandler">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.ErrorHandler.#ctor(MrErsh.RadioRipper.Client.Services.IMessageService,System.Net.Http.HttpMessageHandler)">
+    <parameter name="messageService">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="innerHandler">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.HttpErrorHandler.#ctor(MrErsh.RadioRipper.Client.Services.IMessageService,Serilog.ILogger,System.Net.Http.HttpMessageHandler)">
+    <parameter name="messageService">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="logger">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="innerHandler">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Infrastructure.Http.LoggingHandler.#ctor(Serilog.ILogger,System.Net.Http.HttpMessageHandler)">
+    <parameter name="logger">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="innerHandler">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>

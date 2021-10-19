@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assembly name="MrErsh.RadioRipper.Client.Mvvm">
+  <member name="M:MrErsh.RadioRipper.Client.Mvvm.AsyncCommandBase.#ctor(System.ComponentModel.INotifyPropertyChanged,System.Linq.Expressions.Expression{System.Func{System.Object}}[])">
+    <parameter name="target">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="dependentPropertyExpressions">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Mvvm.AsyncExecutionCommandBase`1.#ctor(System.ComponentModel.INotifyPropertyChanged,System.Func{System.Boolean},System.Linq.Expressions.Expression{System.Func{System.Object}}[])">
+    <parameter name="target">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="canExecute">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="dependentPropertyExpressions">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Mvvm.ExecutionCommand`1.#ctor(System.Func{System.Threading.Tasks.Task{`0}},System.Func{System.Boolean},System.ComponentModel.INotifyPropertyChanged,System.Linq.Expressions.Expression{System.Func{System.Object}}[])">
+    <parameter name="command">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="canExecute">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="target">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Mvvm.ExecutionCommand`2.#ctor(System.Func{`0,System.Threading.Tasks.Task{`1}},System.Func{System.Boolean},System.ComponentModel.INotifyPropertyChanged,System.Linq.Expressions.Expression{System.Func{System.Object}}[])">
+    <parameter name="command">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="canExecute">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="target">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+    <parameter name="dependentPropertyExpressions">
+      <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="P:MrErsh.RadioRipper.Client.Mvvm.IHasLabel.Label">
+    <attribute ctor="M:JetBrains.Annotations.CanBeNullAttribute.#ctor" />
+  </member>
+  <member name="M:MrErsh.RadioRipper.Client.Mvvm.NotifyTaskCompletion`1.#ctor(System.Threading.Tasks.Task{`0})">
+    <parameter name="task">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+</assembly>

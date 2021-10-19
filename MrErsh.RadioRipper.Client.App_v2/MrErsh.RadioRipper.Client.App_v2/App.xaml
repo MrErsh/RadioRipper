@@ -1,0 +1,26 @@
+<Application
+    x:Class="MrErsh.RadioRipper.Client.App_v2.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:MrErsh.RadioRipper.Client.UI.Converters"
+    xmlns:viewmodels="using:MrErsh.RadioRipper.Client.ViewModels">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="ms-appx:///MrErsh.RadioRipper.Client.UI/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Other app resources here -->
+            <viewmodels:ViewModelLocator x:Key="ViewModelLocator" />
+
+            <SolidColorBrush x:Name="PaneBackground">#FAFAFA</SolidColorBrush>
+            <SolidColorBrush x:Name="TopCommandBarBackground">#F3F3F3</SolidColorBrush>
+
+            <conv:BoolToAnythingConverter x:Key="InvertBoolConverter" TrueValue="False" FalseValue="True" DefaultValue="False"/>
+            <conv:BoolToAnythingConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed" DefaultValue="Collapsed"/>
+            <conv:BoolToAnythingConverter x:Key="InvertBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" DefaultValue="Visible"/>
+            <conv:DateFormatConverter x:Key="DateFormatToStringConverter" />
+            <conv:DefaultToVisibilityConverter x:Key="DefaultToVisbilityConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
