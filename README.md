@@ -3,7 +3,7 @@
 .NET 5 WebAPI + клиент на WinUI 3.
 
 ## Сборки
-* **MrErsh.RadioRipper.Client.Api** - запросы к WebApi;
+* **MrErsh.RadioRipper.Client.Api** - запросы к **WebApi**;
 * **MrErsh.RadioRipper.Client.App_v2** - десктоп клиент;
 * **MrErsh.RadioRipper.Client.Mvvm** - MVVM компоненты для клиента;
 * **MrErsh.RadioRipper.Client.Shared** - абстракции, используемые в **Client.Api** и **App_v2**;
