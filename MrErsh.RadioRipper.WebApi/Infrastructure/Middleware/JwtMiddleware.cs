@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace MrErsh.RadioRipper.WebApi.Middleware
 {
+    [Obsolete]
     public sealed class JwtMiddleware
     {
         private readonly RequestDelegate _next;
@@ -26,7 +27,7 @@ namespace MrErsh.RadioRipper.WebApi.Middleware
             _logger = logger;
         }
 
-        public async Task Invoke(HttpContext context, UserManager<User> userManager, IOptions<SecurityJwtOptions> jwtOptions)
+        public async Task Invoke(HttpContext context, UserManager<User> userManager, IOptionsSnapshot<SecurityJwtOptions> jwtOptions)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
@@ -38,7 +39,7 @@ namespace MrErsh.RadioRipper.WebApi.Middleware
 
         private async Task AttachUserToContext(HttpContext context,
                                                UserManager<User> userManager,
-                                               IOptions<SecurityJwtOptions> jwtOptions,
+                                               IOptionsSnapshot<SecurityJwtOptions> jwtOptions,
                                                string token)
         {
             try

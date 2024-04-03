@@ -37,7 +37,7 @@ namespace MrErsh.RadioRipper.WebApi.ApiControllers
         #region Constructor
         public AccountController(UserManager<User> userManager,
                                  IJwtEncodingDescription jwtEncodeDescriptor,
-                                 IOptions<SecurityJwtOptions> jwtOptions,
+                                 IOptionsSnapshot<SecurityJwtOptions> jwtOptions,
                                  ILogger<AccountController> logger,
                                  IUserClaimsPrincipalFactory<User> claimsFactory)
         {
