@@ -10,7 +10,8 @@
     mc:Ignorable="d">
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <NavigationView IsTabStop="False"
+        <NavigationView Margin="0 0 0 20"
+                        IsTabStop="False"
                         PaneDisplayMode="Top"
                         IsBackButtonVisible="Collapsed"
                         SelectionChanged="NavigationView_SelectionChanged">
@@ -43,15 +44,15 @@
             </NavigationView.FooterMenuItems>
         </NavigationView>
 
-        <Button x:Name="myButton" Click="OnMyButtonClick">Click Me</Button>
-        
-        <StackPanel Orientation="Horizontal">
+        <Button x:Name="myButton" Margin="0 0 0 15" Click="OnMyButtonClick">Click Me</Button>
+
+        <StackPanel Margin="0 0 0 15" Orientation="Horizontal">
             <CheckBox x:Name="IsSuccessCheckBox" Content="IsSuccess"/>
             <controls:AsyncToggleSwitch x:Name="Toggle" 
                                         OnBrush="Green" />
         </StackPanel>
-        
-        <CalendarDatePicker>
+
+        <CalendarDatePicker Margin="0 0 0 15">
             <interactivity:Interaction.Behaviors>
                 <behaviors:CalendarAvailableDatesBehavior Dates="{x:Bind Dates, Mode=OneWay}" />
             </interactivity:Interaction.Behaviors>

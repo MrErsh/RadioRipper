@@ -16,7 +16,8 @@ namespace MrErsh.RadioRipper.Core
             Origin = origin.Trim('\0');
             var matches = _streamTitleRegex.Match(origin);
             var title = matches.Groups["title_group"].Value.Trim().Trim('\0');
-            StreamTitle = title;
+            StreamTitle = title
+                .Replace(@"';StreamUrl='", string.Empty); // TODO: в regex
 
             var taMatches = _artistTrackRegex.Match(StreamTitle);
             Artist = taMatches.Groups["artist"].Value.Trim();
