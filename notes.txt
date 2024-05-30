@@ -1,7 +1,7 @@
 При подключении из pgadmin в host прописывать host.docker.internal
 
 Генерация сертификата
-	dev-certs https --trust -ep $env:USERPROFILE\.aspnet\https\{certificate_name_placeholder} -p {certificate_password_placeholder}
+	dotnet dev-certs https --trust -ep $env:USERPROFILE\.aspnet\https\{certificate_name_placeholder} -p {certificate_password_placeholder}
 	
 В docker-compose.override.xml
 	  - ASPNETCORE_Kestrel__Certificates__Default__Password={certificate_password_placeholder}
