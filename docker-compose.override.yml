@@ -14,6 +14,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;https://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=A8FF0DE2-C07F-41A5-ACD7-09726FF7B1E5
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/MrErsh.RadioRipper.WebApi.pfx
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      -  ~\.aspnet\https:/https/

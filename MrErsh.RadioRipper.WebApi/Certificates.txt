@@ -1,3 +1,3 @@
 #dotnet dev-certs https --clean
 dotnet dev-certs https --trust -ep $env:USERPROFILE\.aspnet\https\MrErsh.RadioRipper.WebApi.pfx -p A8FF0DE2-C07F-41A5-ACD7-09726FF7B1E5
-#C:\Users\$env:UserName\.aspnet\https\aspnetapp.pfxa
+#C:\Users\$env:UserName\.aspnet\https\MrErsh.RadioRipper.WebApi.pfx
