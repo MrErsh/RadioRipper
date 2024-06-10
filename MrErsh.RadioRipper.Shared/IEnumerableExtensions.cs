@@ -8,7 +8,7 @@ namespace MrErsh.RadioRipper.Shared
     {
         public static void ForAll<T>([CanBeNull] this IEnumerable<T> source, [NotNull] Action<T> action)
         {
-            if (source == null)
+            if (source == null || action == null)
                 return;
 
             foreach (var item in source)
