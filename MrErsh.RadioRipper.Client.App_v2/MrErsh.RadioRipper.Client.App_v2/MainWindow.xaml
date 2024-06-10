@@ -40,19 +40,19 @@
                               Foreground="White" />
 
                     <TextBlock Grid.Column="1"
-                                   Text="Logout"
-                                   Margin="5 0 0 0"
+                               Text="Logout"
+                               Margin="5 0 0 0"
                                FontSize="12"
-                                   VerticalAlignment="Center" />
+                               VerticalAlignment="Center" />
                 </Grid>
             </Button>
         </Border>
 
         <Frame Grid.Row="1"
-           x:Name="ContentFrame"
-           Background="White"
-           VerticalContentAlignment="Stretch"
-           VerticalAlignment="Stretch" />
+               x:Name="ContentFrame"
+               Background="White"
+               VerticalContentAlignment="Stretch"
+               VerticalAlignment="Stretch" />
     </Grid>
 </Window>
 

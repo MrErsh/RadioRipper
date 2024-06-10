@@ -1,12 +1,12 @@
 using MrErsh.RadioRipper.Client.Api;
 using MrErsh.RadioRipper.Client.Dialogs;
-using MrErsh.RadioRipper.Client.Services;
 using MrErsh.RadioRipper.Client.Model;
 using MrErsh.RadioRipper.Client.Mvvm;
 using MrErsh.RadioRipper.Client.Services;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -41,7 +41,7 @@ namespace MrErsh.RadioRipper.Client.ViewModels
 
             AddStationCommand = new AsyncCommand(AddStationAsync);
             DeleteStationCommand = new ExecutionCommand<Guid?, bool>(DeleteStationAsync);
-            RunStationCommand = new ExecutionCommand<Guid?, bool>(id => ChangeStationState(id));
+            ChangeStationStateCommand = new ExecutionCommand<Guid?, bool>(id => ChangeStationState(id));
             RefreshCommand = new ExecutionCommand<bool>(RefreshStationsAsync);
         }
 
@@ -74,7 +74,7 @@ namespace MrErsh.RadioRipper.Client.ViewModels
 
         public ICommand DeleteStationCommand { get; }
 
-        public AsyncExecutionCommandBase<bool> RunStationCommand { get; }
+        public AsyncExecutionCommandBase<bool> ChangeStationStateCommand { get; }
 
         public AsyncExecutionCommandBase<bool> RefreshCommand { get; }
 
@@ -124,7 +124,12 @@ namespace MrErsh.RadioRipper.Client.ViewModels
                 var stations = await _apiClient.GetStationsAsync().ConfigureAwait(false);
                 var st = stations
                         .Content?
-                        .Select(st => new StationModel { Station = st }) // TODO: use Station
+                        .Select(st =>
+                            new StationModel
+                            {
+                                Station = st,
+                                IsChecked = st.IsRunning
+                            })
                         .OrderByDescending(st => st.Station.IsRunning)
                         .ThenByDescending(st => st.Station?.Name)
                         .ToList();
@@ -136,7 +141,6 @@ namespace MrErsh.RadioRipper.Client.ViewModels
                 });
             }
 
-            // throw new Exception("Test");
             return true;
         }
 
@@ -146,21 +150,37 @@ namespace MrErsh.RadioRipper.Client.ViewModels
 
         private async Task<bool> ChangeStationState(Guid? id)
         {
-            if (id == null || id.Value == default)
-                return false;
-
-            var station = Stations?.First(st => st.Station?.Id == id);
-            using (new LoadingTracker(this))
+            try
             {
-                var newState = !station.Station.IsRunning;
-                var isSuccess = await _apiClient
-                    .ChangeIsRunningAsync(id.Value, new ChangeIsRunningParams { IsRunning = newState })
-                    .ConfigureAwait(false);
+                if (id == null || id.Value == default)
+                    return false;
 
-                if (isSuccess)
-                    station.IsChecked = newState;
+                var station = Stations?.First(st => st.Station?.Id == id);
+                using (new LoadingTracker(this))
+                {
+                    var newState = !station.Station.IsRunning;
+                    var isSuccess = await _apiClient
+                        .ChangeIsRunningAsync(id.Value, new ChangeIsRunningParams { IsRunning = newState })
+                        .ConfigureAwait(false);
 
-                return station.IsChecked;
+                    if (isSuccess)
+                    {
+                        station.Station.IsRunning = newState;
+                        await _threadingService.OnUiThreadAsync(() =>
+                        {
+                            station.IsChecked = newState;
+                            return true;
+                        });
+                    }
+
+                    return station.IsChecked;
+                }
+            }
+            catch(Exception ex)
+            {
+                await RefreshStationsAsync();
+                Debug.WriteLine(ex);
+                return false;
             }
         }
 

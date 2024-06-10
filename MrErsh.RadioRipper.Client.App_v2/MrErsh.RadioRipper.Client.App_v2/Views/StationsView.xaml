@@ -81,9 +81,9 @@
                                                                     RelativePanel.RightOf="Title"
                                                                     RelativePanel.AlignVerticalCenterWithPanel="True"
                                                                     OnBrush="Green"
-                                                                    AsyncCommand="{Binding ElementName=Root, Path=DataContext.RunStationCommand}"
+                                                                    AsyncCommand="{Binding ElementName=Root, Path=DataContext.ChangeStationStateCommand}"
                                                                     CommandParameter="{x:Bind Station.Id}"
-                                                                    IsOn="{Binding Station.IsRunning}">
+                                                                    IsOn="{x:Bind IsChecked, Mode=TwoWay}">
                                             <controls:AsyncToggleSwitch.RenderTransform>
                                                 <CompositeTransform ScaleX=".5" ScaleY=".5" CenterX="15" CenterY="15" />
                                             </controls:AsyncToggleSwitch.RenderTransform>

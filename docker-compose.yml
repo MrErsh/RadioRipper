@@ -41,7 +41,7 @@ services:
     ports:
       - 9090:80
     volumes:
-      - seq-vol:/data:rw
+      - seq-volume:/data:rw
   
   #adminer:
   #  image: adminer
@@ -56,5 +56,5 @@ volumes:
   pgadmin-volume:
     external: true
 
-  seq-vol:
+  seq-volume:
     external: true
