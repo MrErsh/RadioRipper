@@ -10,10 +10,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
     <PackageReference Include="JetBrainsAnnotations.Fody" Version="2.17.0" />
-    <PackageReference Include="NullGuard.Fody" Version="3.0.0" />
-    <PackageReference Include="SimpleInjector" Version="5.3.2" />
+    <PackageReference Include="NullGuard.Fody" Version="3.1.1" />
+    <PackageReference Include="SimpleInjector" Version="5.4.6" />
   </ItemGroup>
 
   <ItemGroup>
