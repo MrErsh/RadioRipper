@@ -1,6 +1,6 @@
 # ![](https://habrastorage.org/webt/cm/lf/kk/cmlfkkudc0hu_y_fou71l_ts8dq.png) RadRip (radio ripper)
 Проект позволяет отслеживать треки на Shoutcast/Icecast радиостанциях.
-.NET 5 WebAPI + клиент на WinUI 3.
+.NET 8 WebAPI (+Docker) + клиент на WinUI 3.
 
 ## Сборки
 * **MrErsh.RadioRipper.Client.Api** - запросы к **WebApi**;
