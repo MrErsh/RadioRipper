@@ -13,4 +13,3 @@ logs/
 
 #Temporary dev items
 *.cache
-*.db*
