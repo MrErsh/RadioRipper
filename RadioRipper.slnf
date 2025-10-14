@@ -1,0 +1,24 @@
+{
+  "solution": {
+    "path": "RadioRipper.sln",
+    "projects": [
+      "Demos\\RipperDemo\\RipperCoreDemo.csproj",
+      "Demos\\UIDemo\\UIDemo (Package)\\UIDemo (Package).wapproj",
+      "Demos\\UIDemo\\UIDemo\\UIDemo.csproj",
+      "Fakes\\Api.Fake\\Api.Fake.csproj",
+      "MrErsh.RadioRipper.Client.Api\\MrErsh.RadioRipper.Client.Api.csproj",
+      "MrErsh.RadioRipper.Client.App_v2\\MrErsh.RadioRipper.Client.App_v2\\MrErsh.RadioRipper.Client.App_v2.csproj",
+      "MrErsh.RadioRipper.Client.Mvvm\\MrErsh.RadioRipper.Client.Mvvm.csproj",
+      "MrErsh.RadioRipper.Client.Shared\\MrErsh.RadioRipper.Client.Shared.csproj",
+      "MrErsh.RadioRipper.Client.UI\\MrErsh.RadioRipper.Client.UI.csproj",
+      "MrErsh.RadioRipper.Core\\MrErsh.RadioRipper.Core.csproj",
+      "MrErsh.RadioRipper.Dal\\MrErsh.RadioRipper.Dal.csproj",
+      "MrErsh.RadioRipper.IdentityDal\\MrErsh.RadioRipper.IdentityDal.csproj",
+      "MrErsh.RadioRipper.Model\\MrErsh.RadioRipper.Model.csproj",
+      "MrErsh.RadioRipper.Shared\\MrErsh.RadioRipper.Shared.csproj",
+      "MrErsh.RadioRipper.WebApi\\MrErsh.RadioRipper.WebApi.csproj",
+      "Tests\\RadioRipper.Core.Tests\\RadioRipper.Core.Tests.csproj",
+      "docker-compose.dcproj"
+    ]
+  }
+}
