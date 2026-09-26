@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Config = MrErsh.RadioRipper.WebApi.Configuration;
 
@@ -25,6 +26,7 @@ namespace MrErsh.RadioRipper.WebApi.Bl
         private readonly IOptionsMonitor<Config.Ripper> _ripperConfigMonitor;
 
         private readonly ConcurrentDictionary<Guid, TimeredRadioRipper> _running = new();
+        private readonly ConcurrentDictionary<Guid, SemaphoreSlim> _stationLocks = new();
 
         public RipperManager(IDbContextFactory<RadioDbContext> dbContextFactory,
                              IRipperFactory ripperFactory,
@@ -43,10 +45,13 @@ namespace MrErsh.RadioRipper.WebApi.Bl
 
             using var context = _dbContextFactory.CreateDbContext();
             {
-                var startTasks = context.Stations
+                var stations = await context.Stations
                     .Where(st => st.IsRunning)
                     .AsNoTracking()
-                    .ToList()
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                var startTasks = stations
                     .Select(st => Task.Run(() => TryStart(st)))
                     .ToArray();
 
@@ -57,53 +62,142 @@ namespace MrErsh.RadioRipper.WebApi.Bl
 
         public async Task<bool> RunAsync(Guid idStation)
         {
-            using var dbContext = _dbContextFactory.CreateDbContext();
-            var station = await dbContext.Stations.FindAsync(idStation);
-            if (station == null)
-                return false;
+            var gate = Gate(idStation);
+            await gate.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                await using var dbContext = _dbContextFactory.CreateDbContext();
+                var station = await dbContext.Stations.FindAsync(idStation).ConfigureAwait(false);
+                if (station == null)
+                    return false;
 
-            TryStart(station);
+                if (station.IsRunning && _running.ContainsKey(idStation))
+                    return true;
 
-            station.IsRunning = true;
-            dbContext.Stations.Update(station);
-            await dbContext.SaveChangesAsync();
-            return true;
+                await using var tx = await dbContext.Database.BeginTransactionAsync().ConfigureAwait(false);
+                station.IsRunning = true;
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+                await tx.CommitAsync().ConfigureAwait(false);
+
+                if (!TryStart(station))
+                {
+                    station.IsRunning = false;
+                    await dbContext.SaveChangesAsync().ConfigureAwait(false);
+                    return false;
+                }
+
+                return true;
+            }
+            finally
+            {
+                gate.Release();
+            }
         }
 
         public async Task<bool> StopAsync(Guid idStation)
         {
-            var ripperExists = _running.TryGetValue(idStation, out var ripper);
-            if (ripperExists)
+            var gate = Gate(idStation);
+            await gate.WaitAsync().ConfigureAwait(false);
+            try
             {
-                ripper.Stop();
-                ripper.TrackChanged -= OnRipperTrackChanged;
-                _running.Remove(idStation, out var _);
+                await using var dbContext = _dbContextFactory.CreateDbContext();
+                var station = await dbContext.Stations.FindAsync(idStation).ConfigureAwait(false);
+                if (station == null)
+                    return false;
+
+                await using var tx = await dbContext.Database.BeginTransactionAsync().ConfigureAwait(false);
+                station.IsRunning = false;
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+                await tx.CommitAsync().ConfigureAwait(false);
+
+                if (_running.TryGetValue(idStation, out var ripper))
+                {
+                    ripper.TrackChangedAsync = null;
+                    ripper.Stop();
+                    _running.TryRemove(idStation, out _);
+                }
+
+                return true;
+            }
+            finally
+            {
+                gate.Release();
+            }
+        }
+
+        public async Task ReconcileAsync()
+        {
+            List<Station> running;
+            await using (var readContext = _dbContextFactory.CreateDbContext())
+            {
+                running = await readContext.Stations
+                    .AsNoTracking()
+                    .Where(s => s.IsRunning)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
             }
 
-            using var _dbContext = _dbContextFactory.CreateDbContext();
-            var station = await _dbContext.Stations.FindAsync(idStation);
-            if (station == null)
-                return false;
+            var runningIds = running.Select(s => s.Id).ToHashSet();
 
-            station.IsRunning = false;
-            _dbContext.Update(station);
-            await _dbContext.SaveChangesAsync();
-            return true;
+            foreach (var station in running)
+            {
+                var gate = Gate(station.Id);
+                await gate.WaitAsync().ConfigureAwait(false);
+                try
+                {
+                    if (_running.ContainsKey(station.Id))
+                        continue;
+
+                    if (TryStart(station))
+                        continue;
+
+                    await using var dbContext = _dbContextFactory.CreateDbContext();
+                    var tracked = await dbContext.Stations.FindAsync(station.Id).ConfigureAwait(false);
+                    if (tracked == null)
+                        continue;
+
+                    tracked.IsRunning = false;
+                    await dbContext.SaveChangesAsync().ConfigureAwait(false);
+                }
+                finally
+                {
+                    gate.Release();
+                }
+            }
+
+            foreach (var id in _running.Keys.ToList())
+            {
+                if (runningIds.Contains(id))
+                    continue;
+
+                var gate = Gate(id);
+                await gate.WaitAsync().ConfigureAwait(false);
+                try
+                {
+                    if (_running.TryGetValue(id, out var ripper))
+                    {
+                        ripper.TrackChangedAsync = null;
+                        ripper.Stop();
+                        _running.TryRemove(id, out _);
+                    }
+                }
+                finally
+                {
+                    gate.Release();
+                }
+            }
         }
+
+        private SemaphoreSlim Gate(Guid stationId) => _stationLocks.GetOrAdd(stationId, _ => new SemaphoreSlim(1, 1));
 
         private bool TryStart([NotNull] Station station)
         {
             try
             {
-                //var ripper = _ripperFactory.Create();
-                //var title = ripper.ReadHeader(station.Url, _settings);
-                //if (title?.StreamTitle == null)
-                //    return false;
-
                 var timeredRipper = _ripperFactory.CreateTimered(station);
+                timeredRipper.TrackChangedAsync = OnRipperTrackChangedAsync;
                 _running[station.Id] = timeredRipper;
                 timeredRipper.Run(GetSettings());
-                timeredRipper.TrackChanged += OnRipperTrackChanged;
                 return true;
             }
             catch (Exception ex)
@@ -116,16 +210,13 @@ namespace MrErsh.RadioRipper.WebApi.Bl
             }
         }
 
-        private void OnRipperTrackChanged(object sender, TrackChangedEventArg e)
+        private async Task OnRipperTrackChangedAsync(TrackChangedEventArg e)
         {
-            if (sender is not TimeredRadioRipper timeredRipper)
-                return;
-
             if (string.IsNullOrWhiteSpace(e.Info.StreamTitle))
             {
                 _logger.LogWarning(Events.Errors.ParseError,
                                    "Error track title parsing for station={stationId}: origin={origin}.",
-                                   timeredRipper.StationId,
+                                   e.StationId,
                                    e.Info.Origin);
                 return;
             }
@@ -137,14 +228,14 @@ namespace MrErsh.RadioRipper.WebApi.Bl
                 {
                     FullName = info.StreamTitle,
                     MetadataHeader = info.Origin,
-                    StationId = timeredRipper.StationId,
+                    StationId = e.StationId,
                     Created = DateTime.UtcNow,
                     TrackName = info.TrackName,
                     Artist = info.Artist
                 };
 
                 dbContext.Tracks.Add(track);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
         }
 

@@ -1,84 +1,64 @@
 using JetBrains.Annotations;
 using Serilog;
 using System;
-using System.Net;
+using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MrErsh.RadioRipper.Core
 {
-    public class Ripper : IRadioRipper
+    public sealed class Ripper : IRadioRipper, IDisposable
     {
         private readonly ILogger _logger;
+        private readonly HttpClient _client;
 
         public Ripper(ILogger logger)
+            : this(logger, CreateClient())
         {
-            _logger = logger;
         }
 
-        /// <summary>
-        /// Get track title from current Url
-        /// </summary>
-        [NotNull]
-        public MetadataHeader ReadHeader(string url, [NotNull] RipperSettings settings, CancellationToken cancellationToken = default)
+        private Ripper(ILogger logger, HttpClient client)
         {
-            var request = CreateRequest(url);
-            for (var counter = 0; counter < settings.NumOfAttempts; counter++)
+            _logger = logger;
+            _client = client;
+        }
+
+        private static HttpClient CreateClient()
+        {
+            var handler = new SocketsHttpHandler
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    _logger.Debug("Cancellation requested for {Url}", url);
-                    return null;
-                }
+                PooledConnectionLifetime = TimeSpan.FromMinutes(10),
+                UseCookies = false,
+                AllowAutoRedirect = false,
+            };
+
+            return new HttpClient(handler) { Timeout = Timeout.InfiniteTimeSpan };
+        }
+
+        public async Task<MetadataHeader> ReadHeaderAsync(string url, [NotNull] RipperSettings settings,
+                                                          CancellationToken cancellationToken = default)
+        {
+            var attempts = Math.Max(1, settings.NumOfAttempts);
+
+            for (var attempt = 0; attempt < attempts; attempt++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
                 try
                 {
-                    var response = (HttpWebResponse)request.GetResponse();
-                    using (var socketStream = response.GetResponseStream())
-                    {
-                        var buffer = new byte[512];
-                        int metadataLength = 0;
-                        StringBuilder metadataHeader = new();
-                        int count = 0;
-                        var metaintHeader = response.GetResponseHeader("icy-metaint"); // blocksize of mp3 data
-                        int metaInt = Convert.ToInt32(metaintHeader);
-
-                        while (!cancellationToken.IsCancellationRequested)
-                        {
-                            // read byteblock
-                            int bufLen = socketStream.Read(buffer, 0, buffer.Length);
-                            if (bufLen < 0)
-                                throw new Exception("Buf len is negative");
-
-                            for (int i = 0; i < bufLen; i++)
-                            {
-                                // if there is a header, the 'headerLength' would be set to a value != 0. Then we save the header to a string
-                                if (metadataLength != 0)
-                                {
-                                    metadataHeader.Append(Convert.ToChar(buffer[i]));
-                                    var header = metadataHeader.ToString();
-                                    metadataLength--;
-                                    if (metadataLength == 0) // all metadata informations were written to the 'metadataHeader' string
-                                        return new MetadataHeader(header);
-                                }
-                                else
-                                {
-                                    if (!(count++ < metaInt)) // write bytes to filestream
-                                                              // get headerlength from lengthbyte and multiply by 16 to get correct headerlength
-                                    {
-                                        metadataLength = Convert.ToInt32(buffer[i]) * 16;
-                                        count = 0;
-                                    }
-                                }
-                            }
-                        }
-                        socketStream.Close();
-                    }
+                    return await ReadOnce(url, settings, cancellationToken).ConfigureAwait(false);
                 }
-                catch(Exception ex)
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {
-                    _logger.Warning(ex, "Attempt {Attempt} for {Url}", counter, url);
-                    if (counter == 0)
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    _logger?.Warning(ex, "Attempt {Attempt}/{Total} failed for {Url}", attempt + 1, attempts, url);
+
+                    if (attempt == attempts - 1)
                         throw;
                 }
             }
@@ -86,13 +66,82 @@ namespace MrErsh.RadioRipper.Core
             return null;
         }
 
-        private static WebRequest CreateRequest(string server)
+        private async Task<MetadataHeader> ReadOnce(string url, RipperSettings settings, CancellationToken outerCt)
         {
-            var request = (HttpWebRequest)WebRequest.Create(server);
-            request.Headers.Add("GET", "/HTTP/1.0");
-            request.Headers.Add("Icy-MetaData", "1"); // needed to receive metadata informations
-            request.UserAgent = "WinampMPEG/5.09";
-            return request;
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.TryAddWithoutValidation("Icy-MetaData", "1");
+            request.Headers.UserAgent.ParseAdd("WinampMPEG/5.09");
+
+            using (var connectCts = CancellationTokenSource.CreateLinkedTokenSource(outerCt))
+            {
+                connectCts.CancelAfter(settings.ConnectTimeoutMs);
+
+                var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, connectCts.Token)
+                                            .ConfigureAwait(false);
+                using (response)
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    if (!TryGetIntHeader(response, "icy-metaint", out var metaInt) || metaInt <= 0)
+                        return null;
+
+                    using var readCts = CancellationTokenSource.CreateLinkedTokenSource(outerCt);
+                    readCts.CancelAfter(settings.ReadTimeoutMs);
+
+                    var stream = await response.Content.ReadAsStreamAsync(readCts.Token).ConfigureAwait(false);
+                    return await ReadMetadataBlockAsync(stream, metaInt, readCts.Token).ConfigureAwait(false);
+                }
+            }
         }
+
+        private static async Task<MetadataHeader> ReadMetadataBlockAsync(Stream stream, int metaInt,
+                                                                         CancellationToken ct)
+        {
+            var buffer = new byte[512];
+            var metadata = new StringBuilder();
+            var count = 0;
+            var metadataLength = 0;
+
+            while (true)
+            {
+                ct.ThrowIfCancellationRequested();
+
+                var bufLen = await stream.ReadAsync(buffer.AsMemory(0, buffer.Length), ct).ConfigureAwait(false);
+                if (bufLen <= 0)
+                    throw new IOException("Stream closed before a metadata block was read.");
+
+                for (var i = 0; i < bufLen; i++)
+                {
+                    if (metadataLength != 0)
+                    {
+                        metadata.Append(Convert.ToChar(buffer[i]));
+                        if (--metadataLength == 0)
+                            return new MetadataHeader(metadata.ToString());
+                    }
+                    else if (!(count++ < metaInt))
+                    {
+                        metadataLength = buffer[i] * 16;
+                        count = 0;
+                    }
+                }
+            }
+        }
+
+        private static bool TryGetIntHeader(HttpResponseMessage response, string name, out int value)
+        {
+            value = 0;
+            if (response.Headers.TryGetValues(name, out var values))
+            {
+                foreach (var v in values)
+                {
+                    if (int.TryParse(v, out value))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void Dispose() => _client.Dispose();
     }
 }

@@ -146,7 +146,7 @@ namespace MrErsh.RadioRipper.WebApi.ApiControllers
                 return BadRequest();
 
             using var context = _contextFactory.CreateDbContext();
-            var station = context.StationsForUser(UserId).FirstOrDefault();
+            var station = await context.StationsForUser(UserId).FirstOrDefaultAsync().ConfigureAwait(false);
             if (station == null)
                 return NotFound();
 

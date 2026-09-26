@@ -48,12 +48,13 @@ namespace MrErsh.RadioRipper.WebApi
             services.AddSingleton<IRipperManager, RipperManager>();
             services.AddSingleton<IRipperFactory, RipperFactory>();
             services.Configure<Config.Ripper>(Configuration.GetSection(Config.Ripper.SECTION_NAME));
+            services.AddHostedService<RipperReconcileHostedService>();
 
             services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -73,8 +74,6 @@ namespace MrErsh.RadioRipper.WebApi
             {
                 endpoints.MapControllers();
             });
-
-            services.GetService<IRipperManager>().RestartAllAsync();
         }
 
         #endregion

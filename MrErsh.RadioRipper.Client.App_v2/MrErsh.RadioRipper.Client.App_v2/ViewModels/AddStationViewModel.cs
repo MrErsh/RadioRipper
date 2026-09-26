@@ -102,10 +102,10 @@ namespace MrErsh.RadioRipper.Client.ViewModels
                 var count = 3;
                 while (count > 0)
                 {
-                    var header = await Task.Run(() => _ripper.ReadHeader(Station.Url, _riperSettings))
-                                           .ConfigureAwait(false);
+                    var header = await _ripper.ReadHeaderAsync(Station.Url, _riperSettings, _checkingCancellation.Token)
+                                              .ConfigureAwait(false);
 
-                    title = header.StreamTitle;
+                    title = header?.StreamTitle;
                     await Task.Delay(100);
                     count--;
                 }

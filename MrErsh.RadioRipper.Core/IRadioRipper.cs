@@ -1,11 +1,12 @@
 using JetBrains.Annotations;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MrErsh.RadioRipper.Core
 {
     public interface IRadioRipper
     {
-        [NotNull]
-        MetadataHeader ReadHeader(string url, [NotNull] RipperSettings settings, CancellationToken cancellationToken = default);
+        Task<MetadataHeader> ReadHeaderAsync(string url, [NotNull] RipperSettings settings,
+                                             CancellationToken cancellationToken = default);
     }
 }

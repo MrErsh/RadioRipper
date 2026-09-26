@@ -1,6 +1,7 @@
 using MrErsh.RadioRipper.Core;
 using MrErsh.RadioRipper.Model;
 using System;
+using System.Threading.Tasks;
 
 namespace MrErsh.RipperDemo
 {
@@ -15,17 +16,15 @@ namespace MrErsh.RipperDemo
             var ripper = new Ripper(null);
             var timered = new TimeredRadioRipper(ripper, station, null);
             var settings = new RipperSettings(1000 * 5, 10);
-            timered.TrackChanged += Timered_TrackChanged;
+            timered.TrackChangedAsync = e =>
+            {
+                Console.WriteLine(e.Info?.StreamTitle);
+                return Task.CompletedTask;
+            };
             timered.Run(settings);
 
             Console.WriteLine("Hello World!");
             Console.ReadKey();
-        }
-
-        private static void Timered_TrackChanged(object sender, TrackChangedEventArg e)
-        {
-            var title = e.Info?.StreamTitle;
-            Console.WriteLine(title);
         }
     }
 }
