@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <assembly name="MrErsh.RadioRipper.Core">
-  <member name="M:MrErsh.RadioRipper.Core.IRadioRipper.ReadHeader(System.String,MrErsh.RadioRipper.Core.RipperSettings,System.Threading.CancellationToken)">
-    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  <member name="M:MrErsh.RadioRipper.Core.IRadioRipper.ReadHeaderAsync(System.String,MrErsh.RadioRipper.Core.RipperSettings,System.Threading.CancellationToken)">
     <parameter name="settings">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
@@ -23,8 +22,7 @@
   <member name="P:MrErsh.RadioRipper.Core.MetadataHeader.TrackName">
     <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
   </member>
-  <member name="M:MrErsh.RadioRipper.Core.Ripper.ReadHeader(System.String,MrErsh.RadioRipper.Core.RipperSettings,System.Threading.CancellationToken)">
-    <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+  <member name="M:MrErsh.RadioRipper.Core.Ripper.ReadHeaderAsync(System.String,MrErsh.RadioRipper.Core.RipperSettings,System.Threading.CancellationToken)">
     <parameter name="settings">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
@@ -36,6 +34,11 @@
   </member>
   <member name="M:MrErsh.RadioRipper.Core.TimeredRadioRipper.Run(MrErsh.RadioRipper.Core.RipperSettings)">
     <parameter name="settings">
+      <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
+    </parameter>
+  </member>
+  <member name="M:MrErsh.RadioRipper.Core.TrackChangedEventArg.#ctor(System.Guid,MrErsh.RadioRipper.Core.MetadataHeader)">
+    <parameter name="info">
       <attribute ctor="M:JetBrains.Annotations.NotNullAttribute.#ctor" />
     </parameter>
   </member>
